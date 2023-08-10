@@ -1,12 +1,11 @@
 /** @format */
 
 const express = require("express");
-const {authenticateToken} =require('../../middleware/authenticateToken')
+const { authenticateToken } = require("../../middleware/authenticateToken");
 const router = express.Router();
 
-router.get("/", authenticateToken, (req,res)=>{
-    res.status(200).json({phone : req.phone});
+router.get("/", authenticateToken, (req, res) => {
+  res.status(200).json({ customer: req.customer });
 });
 
-
-module.exports = router ; 
+module.exports = router;

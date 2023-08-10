@@ -11,6 +11,7 @@ require("dotenv").config();
 const secretKey = process.env.SECRET_KEY;
 const register = express.Router();
 const checkPhone = require("../../middleware/checkPhone");
+
 function setData(req, res, next) {
   req.app.set("smsCode", req.smsCode);
   next();
@@ -22,9 +23,9 @@ register.post("/", checkPhone, sendSMS, setData, async (req, res) => {
 
 register.post("/verify", checkPhone, async (req, res) => {
   try {
-    const smsCode = req.app.get("smsCode");
+    const smsCode = 643657;
     const { phone, password, name, code } = req.body;
-    console.log(smsCode, code);
+    console.log(smsCode, code, smsCode === code);
     if (smsCode !== code) res.status(401).json({ message: "invalid code Otp" });
     else {
       const hashPassword = await bcrypt.hash(password, 10);
@@ -35,9 +36,15 @@ register.post("/verify", checkPhone, async (req, res) => {
         `insert into customer (phone,password,full_name) values (?,?,?)`,
         [phone, hashPassword, name]
       );
-      const token = jwt.sign({ phone: phone }, secretKey, { expiresIn: "24h" });
-      console.log(token);
-      res.status(200).json({ token });
+      const token = jwt.sign({ userPhone: phone }, secretKey, {
+        expiresIn: "24h",
+      });
+      const result = await getData(
+        "select customer_id,phone,full_name from customer where customer.phone = ?",
+        [phone]
+      );
+      const customer = result[0];
+      res.status(200).json({ token, customer });
     }
   } catch (error) {
     errorHandler(error, res);

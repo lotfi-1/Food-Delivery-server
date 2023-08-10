@@ -3,17 +3,26 @@
 const mysql = require("mysql2");
 require("dotenv").config();
 
+
 const pool = mysql.createPool({
-  host: process.HOST,
-  user: process.USER,
-  password: process.PASSWORD,
-  database: process.DATABASE_NAME,
+  host: "localhost",
+  user: "root",
+  password: "LOTfi2002",
+  database: "restaurant_delivery_management",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
 
-
+// const pool = mysql.createPool({
+//     host: 'bsrjydpg3y1sr0rmuel8-mysql.services.clever-cloud.com',
+//     user: 'uoretlpuvo9fqneg',
+//     password: 'gGrdmgReEs4koJZHS0Ll',
+//     database: 'bsrjydpg3y1sr0rmuel8',
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0
+// })
 
 const getData = async (query, queryParams) => {
   try {

@@ -20,29 +20,20 @@ app.use("/forget-password", forgetPassword);
 app.use("/protected", protected);
 app.use('/home',home);
 
-
-app.listen(8000);
-
-// let offset = 0;
 // const { getData } = require("./config/connect");
 // const test = async () => {
 //   try {
-//     const result = await getData(
-//       `select f.*, r.sum_rating / r.num_rating as rating
-//         from food as f 
-//         join (select food_id,sum(rating) as sum_rating  , count(rating) as num_rating
-//               from food_rating
-//               group by food_id
-//             ) as r on f.id = r.food_id
-//         order by rating desc
-//         limit 15
-//         offset ?`,
-//       [offset]
-//     );
-//     if (result.length > 0) {
-//       console.log(result, offset);
-//       offset += 10;
+//     const result = {
+//       name: "lotfi hallas",
+//       phone: "3564564564",
+//       password: "fdgkdg564",
+//     };
+//     const customer = {};
+//     for (let key in result) {
+//       console.log(key);
+//       if (key !== "password") customer[key] = result[key];
 //     }
+//     console.log(customer);
 //   } catch (error) {
 //     console.log(error);
 //   }
@@ -50,4 +41,4 @@ app.listen(8000);
 
 // test();
 
-
+app.listen(8000);
