@@ -12,26 +12,26 @@ Thank you for using our service!
 
 const sendSMS = async (req, res, next) => {
   try {
-    const smsCode = 123456;
+    const smsCode = generateSMSCode();
     const { phone } = req.body;
-    // const payload = `username=${process.env.EASY_SEND_SMS_USERNAME}
-    // &password=${process.env.EASY_SEND_SMS_PASSWORD}
-    // &to=${phone}
-    // &from=${process.env.EASY_SEND_SMS_SENDER_ID}
-    // &text=${smsCode},
-    // &type=0`;
-    // const headers = {
-    //   "Content-Type": "application/x-www-form-urlencoded",
-    //   Cookie: "ASPSESSIONIDASCQBARR=NKOHDCHDOFEOOALJIGDGGPAM",
-    // };
+    const payload = `username=${process.env.EASY_SEND_SMS_USERNAME}
+    &password=${process.env.EASY_SEND_SMS_PASSWORD}
+    &to=${phone}
+    &from=${process.env.EASY_SEND_SMS_SENDER_ID}
+    &text=${smsCode},
+    &type=0`;
+    const headers = {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Cookie: "ASPSESSIONIDASCQBARR=NKOHDCHDOFEOOALJIGDGGPAM",
+    };
 
-    // const response = await axios.post(
-    //   "https://api.easysendsms.app/bulksms",
-    //   payload,
-    //   { headers }
-    // );
-    // console.log("SMS sent successfully:", response.data);
-    req.smsCode = smsCode;
+    const response = await axios.post(
+      "https://api.easysendsms.app/bulksms",
+      payload,
+      { headers }
+    );
+    console.log("SMS sent successfully:", response.data);
+    req.session.smsCode = smsCode;
     next();
   } catch (error) {
     console.error(error);

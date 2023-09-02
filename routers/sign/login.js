@@ -12,7 +12,7 @@ const login = express.Router();
 login.post("/", async (req, res, next) => {
   try {
     const { phone, password } = req.body;
-    console.log(phone, password);
+    console.log(phone)
     await getData(`select * from customer where phone = ?`, [phone]).then(
       async (result) => {
         if (result.length === 1) {

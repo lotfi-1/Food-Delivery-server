@@ -15,7 +15,7 @@ const authenticateToken = async (req, res, next) => {
       "select customer_id,phone,full_name from customer where customer.phone = ?",
       [data.userPhone]
     );
-    req.customer = customer[0];
+    req.session.customer= customer[0];
     next();
   } catch (error) {
     errorHandler(error, res);

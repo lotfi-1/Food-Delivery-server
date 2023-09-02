@@ -16,16 +16,16 @@ function setData(req, res, next) {
   req.app.set("smsCode", req.smsCode);
   next();
 }
-
-register.post("/", checkPhone, sendSMS, setData, async (req, res) => {
+// sendSMS, setData
+register.post("/", checkPhone, sendSMS, async (req, res) => {
   res.status(200).json({ message: "code Otp send successfully" });
 });
 
 register.post("/verify", checkPhone, async (req, res) => {
   try {
-    const smsCode = 643657;
+    const smsCode = req.session.smsCode;
     const { phone, password, name, code } = req.body;
-    console.log(smsCode, code, smsCode === code);
+    console.log(smsCode === code);
     if (smsCode !== code) res.status(401).json({ message: "invalid code Otp" });
     else {
       const hashPassword = await bcrypt.hash(password, 10);
@@ -36,14 +36,15 @@ register.post("/verify", checkPhone, async (req, res) => {
         `insert into customer (phone,password,full_name) values (?,?,?)`,
         [phone, hashPassword, name]
       );
-      const token = jwt.sign({ userPhone: phone }, secretKey, {
-        expiresIn: "24h",
-      });
       const result = await getData(
         "select customer_id,phone,full_name from customer where customer.phone = ?",
         [phone]
       );
+      
       const customer = result[0];
+      const token = jwt.sign({ userPhone: phone }, secretKey, {
+        expiresIn: "24h",
+      });
       res.status(200).json({ token, customer });
     }
   } catch (error) {
